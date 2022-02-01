@@ -12,8 +12,9 @@ on:
         type: choice
         description: Who to greet
         options: 
-        - monalisa
-        - cschleiden
+        - prashant
+        - vimal
+        - world
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
