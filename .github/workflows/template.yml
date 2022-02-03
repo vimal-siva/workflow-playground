@@ -1,0 +1,14 @@
+name: template
+
+on:
+  workflow_call:
+    environment:
+      type: string
+      required: true
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: amp cli login
+        run: ECHO Greet
