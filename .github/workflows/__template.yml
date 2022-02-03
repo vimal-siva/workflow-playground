@@ -7,5 +7,6 @@ jobs:
   greet:
     runs-on: ubuntu-latest
     steps:
+      - run: env
       - name: amp cli login
         run: echo "Hello World"
