@@ -2,9 +2,6 @@ name: template
 
 on:
   workflow_call:
-    environment:
-      type: string
-      required: true
 
 jobs:
   greet:
