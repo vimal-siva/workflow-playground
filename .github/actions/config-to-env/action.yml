@@ -1,0 +1,13 @@
+name: Config to env variables
+
+inputs:
+  environment:
+    type: string
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Read env variables from config file
+      run: cat .github/configs/${{ inputs.environment }}.config >> $GITHUB_ENV 
+      shell: bash        
