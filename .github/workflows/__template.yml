@@ -7,6 +7,9 @@ jobs:
   greet:
     runs-on: ubuntu-latest
     steps:
+      - uses: ./github/actions/config-to-env
+        with:
+          environment: test
       - run: env
       - name: amp cli login
         run: echo "Hello World"
