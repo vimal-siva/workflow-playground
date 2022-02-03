@@ -5,4 +5,4 @@ on:
 
 jobs:
   greet:
-    uses: ./.github/workflows/template.yml
+    uses: ./.github/workflows/__template.yml
