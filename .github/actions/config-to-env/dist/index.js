@@ -5554,7 +5554,7 @@ var external_fs_ = __nccwpck_require__(147);
 
 
 try {
-    const environment = 'test';//getInput('environment');
+    const environment = (0,core.getInput)('environment');
     const configPath = './.github/configs';
 
     let values = readVariables(`${configPath}/shared.yml`);
@@ -5569,13 +5569,11 @@ try {
 
 function readVariables(file) {
     const fileContents = (0,external_fs_.readFileSync)(file, 'utf8');
-    const variables = load(fileContents).variables;
-    console.log(variables);
-    return variables.map(value => { name: value.name; value: value.value });
+    return load(fileContents).variables;
 }
 
 function updateGitHubEnv(values) {
-    console.log(values);
+    values.forEach(_ => (0,core.exportVariable)(_.name, _.value));
 }
 })();
 

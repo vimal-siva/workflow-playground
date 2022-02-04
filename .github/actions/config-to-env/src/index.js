@@ -1,9 +1,9 @@
-import { getInput, setFailed } from '@actions/core';
+import { getInput, setFailed, exportVariable } from '@actions/core';
 import { load } from 'js-yaml';
 import { readFileSync } from 'fs';
 
 try {
-    const environment = 'test';//getInput('environment');
+    const environment = getInput('environment');
     const configPath = './.github/configs';
 
     let values = readVariables(`${configPath}/shared.yml`);
@@ -18,11 +18,9 @@ try {
 
 function readVariables(file) {
     const fileContents = readFileSync(file, 'utf8');
-    const variables = load(fileContents).variables;
-    console.log(variables);
-    return variables.map(value => { name: value.name; value: value.value });
+    return load(fileContents).variables;
 }
 
 function updateGitHubEnv(values) {
-    console.log(values);
+    values.forEach(_ => exportVariable(_.name, _.value));
 }
