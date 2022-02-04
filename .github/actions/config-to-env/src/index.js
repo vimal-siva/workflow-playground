@@ -20,7 +20,7 @@ function readVariables(file) {
     const fileContents = readFileSync(file, 'utf8');
     const variables = load(fileContents).variables;
     console.log(variables);
-    return variables.map(value => new { name: value.name, value: value.value });
+    return variables.map(value => { name: value.name; value: value.value });
 }
 
 function updateGitHubEnv(values) {
