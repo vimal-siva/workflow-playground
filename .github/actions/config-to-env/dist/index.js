@@ -5569,7 +5569,7 @@ try {
 
 function readVariables(file) {
     const fileContents = (0,external_fs_.readFileSync)(file, 'utf8');
-    const variables = safeLoad(fileContents).variables;
+    const variables = load(fileContents).variables;
     console.log(variables);
     return variables.map(value => new { name: value.name, value: value.value });
 }

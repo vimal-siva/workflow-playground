@@ -1,5 +1,5 @@
 import { getInput, setFailed } from '@actions/core';
-import { safeLoad } from 'js-yaml';
+import { load } from 'js-yaml';
 import { readFileSync } from 'fs';
 
 try {
@@ -18,7 +18,7 @@ try {
 
 function readVariables(file) {
     const fileContents = readFileSync(file, 'utf8');
-    const variables = safeLoad(fileContents).variables;
+    const variables = load(fileContents).variables;
     console.log(variables);
     return variables.map(value => new { name: value.name, value: value.value });
 }
