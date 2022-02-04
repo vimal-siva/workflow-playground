@@ -1,0 +1,6 @@
+variables:
+  - name: key1
+    value: value1
+
+  - name: key3
+    value: value3

@@ -1,4 +1,5 @@
-name: Config to env variables
+name: YAML Variables
+description: Read the env variables from yml config files
 
 inputs:
   environment:
@@ -6,8 +7,5 @@ inputs:
     required: true
 
 runs:
-  using: "composite"
-  steps:
-    - name: Read env variables from config file
-      run: cat .github/configs/${{ inputs.environment }}.config >> $GITHUB_ENV 
-      shell: bash        
+  using: 'node16'
+  main: 'dist/index.js'

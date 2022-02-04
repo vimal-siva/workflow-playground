@@ -1,0 +1,28 @@
+{
+  "name": "config-to-env",
+  "version": "1.0.0",
+  "description": "Read the env variables from yml config files",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "ncc build src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Maersk-Global/automated-container-availability.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Maersk-Global/automated-container-availability/issues"
+  },
+  "homepage": "https://github.com/Maersk-Global/automated-container-availability#readme",
+  "dependencies": {
+    "@actions/core": "^1.6.0",
+    "@actions/github": "^5.0.0",
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.33.1"
+  }
+}

@@ -1,0 +1,6 @@
+variables:
+  - name: key1
+    value: testvalue12
+
+  - name: key4
+    value: value4
