@@ -5546,12 +5546,15 @@ var jsYaml = {
 /* harmony default export */ const js_yaml = ((/* unused pure expression or super */ null && (jsYaml)));
 
 
+// EXTERNAL MODULE: external "fs"
+var external_fs_ = __nccwpck_require__(147);
 ;// CONCATENATED MODULE: ./src/index.js
 
 
 
+
 try {
-    const environment = (0,core.getInput)('environment');
+    const environment = 'test';//getInput('environment');
     const configPath = './.github/configs';
 
     let values = readVariables(`${configPath}/shared.yml`);
@@ -5565,7 +5568,7 @@ try {
 }
 
 function readVariables(file) {
-    const fileContents = fs.readFileSync(file, 'utf8');
+    const fileContents = (0,external_fs_.readFileSync)(file, 'utf8');
     const variables = safeLoad(fileContents).variables;
     console.log(variables);
     return variables.map(value => new { name: value.name, value: value.value });
