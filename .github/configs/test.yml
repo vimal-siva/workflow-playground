@@ -3,4 +3,4 @@ variables:
     value: testvalue12
 
   - name: key4
-    value: --cdt-only
+    value: '--cdt-only'
