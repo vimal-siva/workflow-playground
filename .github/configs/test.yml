@@ -1,6 +1,4 @@
 variables:
-  - name: key1
-    value: testvalue12
-
-  - name: key4
+  - name: ApigeeEnvArg
+    description: 'Arguments for specifying the environment'
     value: '--cdt-only'
