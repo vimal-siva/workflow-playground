@@ -1,4 +1,4 @@
-import { getInput, setFailed, exportVariable } from '@actions/core';
+import { getInput, setFailed, exportVariable, setSecret } from '@actions/core';
 import { load } from 'js-yaml';
 import { readFileSync } from 'fs';
 
@@ -6,21 +6,19 @@ try {
     const environment = getInput('environment');
     const configPath = './.github/configs';
 
-    let values = readVariables(`${configPath}/shared.yml`);
-    updateGitHubEnv(values);
+    loadVariablesToWorkflowEnv(`${configPath}/shared.yml`);
 
-    values = readVariables(`${configPath}/${environment}.yml`);
-    updateGitHubEnv(values);
+    loadVariablesToWorkflowEnv(`${configPath}/${environment}.yml`);
 
 } catch (error) {
     setFailed(error.message);
 }
 
-function readVariables(file) {
+function loadVariablesToWorkflowEnv(file) {
     const fileContents = readFileSync(file, 'utf8');
-    return load(fileContents).variables;
-}
-
-function updateGitHubEnv(values) {
-    values.forEach(_ => exportVariable(_.name, _.value));
+    const variables = load(fileContents).variables;
+    variables.forEach(_ => { 
+        setSecret(_.value); 
+        exportVariable(_.name, _.value);
+    });
 }

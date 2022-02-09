@@ -13,4 +13,4 @@ jobs:
           environment: test
       - run: env
       - name: amp cli login
-        run: echo "Hello World"
+        run: echo "Hello ${{ env.key1 }}"
