@@ -2,7 +2,15 @@ name: Manual workflow
 
 on:
   workflow_dispatch:
+   inputs:
+    enableManualDeployement :
+      description: 'Click to enable manual deployment from a custom branch to the test environment.'
+      type: boolean
+      default: false
+      required: true
 
 jobs:
   greet:
     uses: ./.github/workflows/__template.yml
+    with:    
+      can-apply-terraform-plan: ${{ github.event.inputs.enableManualDeployement == 'true' || github.ref == 'refs/heads/main' }}
