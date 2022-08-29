@@ -2,9 +2,16 @@ name: template
 
 on:
   workflow_call:
+    inputs:
+      can-apply-terraform-plan:
+         type: boolean
+         description: "Indicates whether terraform changes can be applied or not"
+         required: false
+         default: true
 
 jobs:
   greet:
+    if: ${{ inputs.can-apply-terraform-plan == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
