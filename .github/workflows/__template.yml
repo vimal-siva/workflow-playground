@@ -18,7 +18,7 @@ jobs:
         run: echo "${{ toJSON(inputs) }}"
 
   greet:
-    if: ${{ inputs.can-apply-terraform-plan == 'true' }}
+    if: ${{ inputs.can-apply-terraform-plan }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
