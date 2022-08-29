@@ -10,6 +10,10 @@ on:
          default: true
 
 jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - run: env
   greet:
     if: ${{ inputs.can-apply-terraform-plan == 'true' }}
     runs-on: ubuntu-latest
