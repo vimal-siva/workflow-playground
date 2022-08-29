@@ -13,4 +13,4 @@ jobs:
   greet:
     uses: ./.github/workflows/__template.yml
     with:    
-      can-apply-terraform-plan: ${{ github.event.inputs.enableManualDeployement == 'true' || github.ref == 'refs/heads/main' }}
+      can-apply-terraform-plan: ${{ github.event.inputs.enableManualDeployement == 'true' }}
