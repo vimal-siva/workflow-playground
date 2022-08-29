@@ -15,7 +15,7 @@ jobs:
     steps:
       - run: env
       - name: Output Inputs
-        run: echo "${{ toJSON(github.event.inputs) }}"
+        run: echo "${{ toJSON(inputs) }}"
 
   greet:
     if: ${{ inputs.can-apply-terraform-plan == 'true' }}
