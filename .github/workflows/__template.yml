@@ -14,6 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: env
+      - name: Output Inputs
+        run: echo "${{ toJSON(github.event.inputs) }}"
+
   greet:
     if: ${{ inputs.can-apply-terraform-plan == 'true' }}
     runs-on: ubuntu-latest
