@@ -8,9 +8,12 @@ on:
       type: boolean
       default: false
       required: true
-
+env:
+  IMAGE: 'string image'
+  
 jobs:
   greet:
     uses: ./.github/workflows/__template.yml
     with:    
       can-apply-terraform-plan: ${{ github.event.inputs.enableManualDeployement == 'true' }}
+      image-name: $IMAGE
