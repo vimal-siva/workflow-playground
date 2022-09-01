@@ -12,6 +12,13 @@ env:
   IMAGE: 'string image'
   
 jobs:
+  new:
+    runs-on: ubuntu-latest
+    steps:    
+      - id: image-path
+        run: echo "::set-output name=value::$(echo ${{ github.repository }}/rock-api | tr '[A-Z]' '[a-z]')"
+
+      - run: echo ${{ steps.image-path.outputs.value }}
   greet:
     uses: ./.github/workflows/__template.yml
     with:    
