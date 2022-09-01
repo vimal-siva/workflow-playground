@@ -23,4 +23,3 @@ jobs:
     uses: ./.github/workflows/__template.yml
     with:    
       can-apply-terraform-plan: ${{ github.event.inputs.enableManualDeployement == 'true' }}
-      image-name: ${{ $IMAGE }}
