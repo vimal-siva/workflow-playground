@@ -8,6 +8,11 @@ on:
          description: "Indicates whether terraform changes can be applied or not"
          required: false
          default: true
+      image-name:
+        type: string
+        description: 'ass'
+        required: false
+        default: ''
 
 jobs:
   debug:
