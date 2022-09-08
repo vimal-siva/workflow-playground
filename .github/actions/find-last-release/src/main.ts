@@ -10,7 +10,7 @@ async function run() {
     const octokit = new Octokit({
       auth: config.githubToken
     });
-
+    
     const response = await octokit.request('GET /repos/{owner}/{repo}/branches', { ...config });
     if (!!response && response.status == 200) {
       var releases = response.data
