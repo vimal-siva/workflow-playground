@@ -48,8 +48,14 @@ function run() {
             const octokit = new rest_1.Octokit({
                 auth: config.githubToken
             });
-            const branches = yield octokit.request('GET /repos/{owner}/{repo}/branches', Object.assign({}, config));
-            console.log(branches);
+            const response = yield octokit.request('GET /repos/{owner}/{repo}/branches', Object.assign({}, config));
+            if (!!response && response.status == 200) {
+                var releases = response.data
+                    .map(_ => _.name)
+                    .filter(_ => _.startsWith('release-'))
+                    .map(_ => parseInt(_.replace('release-', '')));
+                console.log(`release-${Math.max(...releases)}`);
+            }
         }
         catch (error) {
             console.log(error);
