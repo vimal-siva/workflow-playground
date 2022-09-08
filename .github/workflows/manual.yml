@@ -16,3 +16,4 @@ jobs:
       - run: env
       - uses: actions/checkout@v2
       - uses: ./.github/actions/find-last-release
+      - run: env
