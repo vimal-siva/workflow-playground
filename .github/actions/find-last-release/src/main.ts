@@ -11,8 +11,15 @@ async function run() {
       auth: config.githubToken
     });
 
-    const branches = await octokit.request('GET /repos/{owner}/{repo}/branches', { ...config });
-    console.log(branches);
+    const response = await octokit.request('GET /repos/{owner}/{repo}/branches', { ...config });
+    if (!!response && response.status == 200) {
+      var releases = response.data
+        .map(_ => _.name)
+        .filter(_ => _.startsWith('release-'))
+        .map(_ => parseInt(_.replace('release-', '')));
+
+      console.log(`release-${Math.max(...releases)}`);      
+    }
 
   } catch (error: any) {
     console.log(error);
