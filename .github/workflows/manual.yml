@@ -8,19 +8,11 @@ on:
       type: boolean
       default: false
       required: true
-env:
-  IMAGE: 'string image'
   
 jobs:
   new:
     runs-on: ubuntu-latest
-    steps:    
-      - id: image-path
-        run: echo "::set-output name=value::$(echo ${{ github.repository }}/rock-api | tr '[A-Z]' '[a-z]')"
-
-      - run: echo ${{ steps.image-path.outputs.value }}
-  greet:
-    uses: ./.github/workflows/__template.yml
-    with:    
-      can-apply-terraform-plan: ${{ github.event.inputs.enableManualDeployement == 'true' }}
-      image-name: $(echo ${{ github.repository }}/rock-api | tr '[A-Z]' '[a-z]')
+    steps:
+      - run: env
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/find-last-release
