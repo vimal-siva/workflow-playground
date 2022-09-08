@@ -1,4 +1,4 @@
-import { setFailed } from "@actions/core";
+import { setFailed, setOutput } from "@actions/core";
 import { Octokit } from "@octokit/rest";
 import { env } from "process";
 import { parseConfig } from './config.service';
@@ -18,9 +18,10 @@ async function run() {
         .filter(_ => _.startsWith('release-'))
         .map(_ => parseInt(_.replace('release-', '')));
 
-      console.log(`release-${Math.max(...releases)}`);      
+      const releaseBranch = `release-${Math.max(...releases)}`;
+      console.log(`Last released branch : ${releaseBranch}`);
+      setOutput('releaseBranch', releaseBranch)
     }
-
   } catch (error: any) {
     console.log(error);
     setFailed(error.message);

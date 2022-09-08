@@ -26,7 +26,9 @@ function run() {
                     .map(_ => _.name)
                     .filter(_ => _.startsWith('release-'))
                     .map(_ => parseInt(_.replace('release-', '')));
-                console.log(`release-${Math.max(...releases)}`);
+                const releaseBranch = `release-${Math.max(...releases)}`;
+                console.log(`Last released branch : ${releaseBranch}`);
+                (0, core_1.setOutput)('releaseBranch', releaseBranch);
             }
         }
         catch (error) {
