@@ -8,12 +8,17 @@ on:
       type: boolean
       default: false
       required: true
-  
+env:
+  test: sandbox
+  preprod: dev
+  actual: test
 jobs:
   new:
     runs-on: ubuntu-latest
+    env:
+      state-file: random:${{ env[${{ env.actual }}] }}
     steps:
       - run: env
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/find-last-release
       - run: env
