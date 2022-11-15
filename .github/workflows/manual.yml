@@ -16,7 +16,7 @@ jobs:
   new:
     runs-on: ubuntu-latest
     env:
-      state-file: random:${{ env[${{ env.actual }}] }}
+      state-file: random:${{ env.${{ env.actual }} }}
     steps:
       - run: env
       - uses: actions/checkout@v3
