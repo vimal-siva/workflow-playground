@@ -15,12 +15,7 @@ env:
 jobs:
   new:
     runs-on: ubuntu-latest
-    env:
-      state-file: random:${{ env.${{ env.actual }} }}
     steps:
-      - run: env
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/find-last-release
       - run: env
       - run: |
           echo -e "\e[1;31m::group::Logs of pod"
