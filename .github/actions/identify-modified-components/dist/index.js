@@ -59,6 +59,7 @@ function getPreviousReleaseTag() {
             process.exit(1);
         }
         revision = revision.trim();
+        (0, core_1.info)(`Identified revision ${revision}`);
         exec(`git describe --tags ${revision}`, (error, tag, stderr) => {
             if (error) {
                 (0, core_1.setFailed)(`Could not find any tags because: ${stderr}`);
