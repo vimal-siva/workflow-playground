@@ -31,7 +31,8 @@ function getPreviousReleaseTag(): string {
         process.exit(1);
       }
       revision = revision.trim();
-      console.log(`Identified revision ${revision}`);
+      setFailed(`Identified revision ${revision}`);
+      process.exit(1);
 
       exec(`git describe --tags ${revision}`, (error, tag, stderr) => {
         if (error) {
