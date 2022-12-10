@@ -1,0 +1,7 @@
+{
+    "IngestInfo": {
+        "Trigger": {
+            "CronSchedule": "0 */5 * ? * *"
+        }
+    }
+}

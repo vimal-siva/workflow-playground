@@ -1,2 +1,40 @@
 
+.vs
+.vscode
 **/node_modules/**
+
+# Visual Studio Code
+# ===============================================================
+
+# User-specific files
+# ===============================================================
+**/**/*.dbmdl
+**/**/*.jfm
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.log
+*.pubxml
+
+**/node_modules
+**/[Bb]in/
+**/[Oo]bj/
+**/*.dbmdl
+**/*.jfm
+**/*DotSettings.user
+
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+*.vspscc
+*.vssscc
+UpgradeLog*.XML
+UpgradeLog*.htm
+
+*.ldf
+*.mdf
+/TestResults
+
+**/*.[Ll]ocal.json
