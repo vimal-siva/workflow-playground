@@ -1,5 +1,5 @@
 import { Octokit } from "@octokit/rest";
-import { setFailed, info, warning } from "@actions/core";
+import { setFailed, info, warning, debug } from "@actions/core";
 
 type Env = Record<string, string | undefined>;
 
@@ -31,6 +31,7 @@ function getPreviousReleaseTag(): string {
         process.exit(1);
       }
       revision = revision.trim();
+      debug(`Identified revision ${revision}`);
 
       exec(`git describe --tags ${revision}`, (error, tag, stderr) => {
         if (error) {
