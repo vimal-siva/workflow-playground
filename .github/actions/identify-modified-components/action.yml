@@ -1,12 +1,6 @@
 name: Find last release branch
 description: Find last release branch
 
-inputs:
-  lastReleasedBranch:
-    description: 'Last released branch name'
-    type: string
-    required: true
-
 runs:
   using: 'node16'
   main: 'dist/index.js'

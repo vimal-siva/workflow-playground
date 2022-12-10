@@ -1,6 +1,0 @@
-name: Find last release branch
-description: Find last release branch
-
-runs:
-  using: 'node16'
-  main: 'dist/index.js'

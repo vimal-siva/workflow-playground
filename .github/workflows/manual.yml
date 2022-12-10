@@ -17,7 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: env
+      - uses: ./.github/actions/identify-modified-components
+        name: Identify modified components
       - run: |
           echo -e "\e[1;31m::group::Logs of pod"
-          echo "rondom logs"
+          echo "random logs"
           echo "::endgroup::"
