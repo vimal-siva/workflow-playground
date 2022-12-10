@@ -1,5 +1,6 @@
 import { Octokit } from "@octokit/rest";
-import { setFailed, info, warning, debug } from "@actions/core";
+import { setFailed, info, warning } from "@actions/core";
+import { exec } from "child_process";
 
 type Env = Record<string, string | undefined>;
 
@@ -21,7 +22,6 @@ function parseConfig(env: Env): Config {
 }
 
 function getPreviousReleaseTag(): string {
-  const { exec } = require("child_process");
   var releaseTag: string = "";
   exec(
     "git rev-list --tags --max-count=1 --skip=1 --no-walk",

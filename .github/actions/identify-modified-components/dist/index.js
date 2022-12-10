@@ -41,6 +41,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getFilesModifiedFromPreviousRelease = void 0;
 const rest_1 = __nccwpck_require__(5375);
 const core_1 = __nccwpck_require__(2186);
+const child_process_1 = __nccwpck_require__(2081);
 function parseConfig(env) {
     const [owner, repo] = (env.GITHUB_REPOSITORY || "").split("/", 2);
     return {
@@ -51,16 +52,15 @@ function parseConfig(env) {
     };
 }
 function getPreviousReleaseTag() {
-    const { exec } = __nccwpck_require__(2081);
     var releaseTag = "";
-    exec("git rev-list --tags --max-count=1 --skip=1 --no-walk", (error, revision, stderr) => {
+    (0, child_process_1.exec)("git rev-list --tags --max-count=1 --skip=1 --no-walk", (error, revision, stderr) => {
         if (error) {
             (0, core_1.setFailed)(`Could not find any revisions because: ${stderr}`);
             process.exit(1);
         }
         revision = revision.trim();
         (0, core_1.info)(`Identified revision ${revision}`);
-        exec(`git describe --tags ${revision}`, (error, tag, stderr) => {
+        (0, child_process_1.exec)(`git describe --tags ${revision}`, (error, tag, stderr) => {
             if (error) {
                 (0, core_1.setFailed)(`Could not find any tags because: ${stderr}`);
                 process.exit(1);
