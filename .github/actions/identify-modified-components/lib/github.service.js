@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getFilesModifiedFromPreviousRelease = void 0;
 const rest_1 = require("@octokit/rest");
 const core_1 = require("@actions/core");
+const console_1 = require("console");
 function parseConfig(env) {
     const [owner, repo] = (env.GITHUB_REPOSITORY || "").split("/", 2);
     return {
@@ -47,6 +48,7 @@ function getFilesModifiedFromPreviousRelease(env) {
             .map((_) => _.tag_name);
         if (releasedTags.length < 2)
             (0, core_1.setFailed)("Failed to fetch previous release tag");
+        (0, console_1.debug)(`Tags to compare :: ${releasedTags[0]} & ${releasedTags[1]}`);
         const commits = yield octokit.repos.compareCommits(Object.assign(Object.assign({}, config), { head: releasedTags[1] }));
         return ((_c = (_b = (_a = commits.data.files) === null || _a === void 0 ? void 0 : _a.filter((file) => file.status != "removed")) === null || _b === void 0 ? void 0 : _b.map((file) => file.filename)) !== null && _c !== void 0 ? _c : []);
     });
