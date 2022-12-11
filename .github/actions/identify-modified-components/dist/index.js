@@ -41,7 +41,6 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getFilesModifiedFromPreviousRelease = void 0;
 const rest_1 = __nccwpck_require__(5375);
 const core_1 = __nccwpck_require__(2186);
-const console_1 = __nccwpck_require__(1807);
 function parseConfig(env) {
     const [owner, repo] = (env.GITHUB_REPOSITORY || "").split("/", 2);
     return {
@@ -77,7 +76,7 @@ function getFilesModifiedFromPreviousRelease(env) {
             .map((_) => _.tag_name);
         if (releasedTags.length < 2)
             (0, core_1.setFailed)("Failed to fetch previous release tag");
-        (0, console_1.debug)(`Tags to compare :: ${releasedTags[0]} & ${releasedTags[1]}`);
+        (0, core_1.info)(`Tags to compare :: ${releasedTags[0]} & ${releasedTags[1]}`);
         const commits = yield octokit.request('GET /repos/{owner}/{repo}/compare/{basehead}', {
             owner: config.owner,
             repo: config.repo,
@@ -12361,14 +12360,6 @@ module.exports = eval("require")("encoding");
 
 "use strict";
 module.exports = require("assert");
-
-/***/ }),
-
-/***/ 1807:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("console");
 
 /***/ }),
 
