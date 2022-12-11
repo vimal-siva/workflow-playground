@@ -1,6 +1,5 @@
 import { Octokit } from "@octokit/rest";
 import { setFailed, info, warning } from "@actions/core";
-import { exec } from "child_process";
 
 type Env = Record<string, string | undefined>;
 
@@ -21,32 +20,7 @@ function parseConfig(env: Env): Config {
   };
 }
 
-function getPreviousReleaseTag(): string {
-  var releaseTag: string = "";
-  exec(
-    "git rev-list --tags --max-count=1 --skip=1 --no-walk",
-    (error, revision, stderr) => {
-      if (error) {
-        setFailed(`Could not find any revisions because: ${stderr}`);
-        process.exit(1);
-      }
-      revision = revision.trim();
-      info(`Identified revision ${revision}`);
-
-      exec(`git describe --tags ${revision}`, (error, tag, stderr) => {
-        if (error) {
-          setFailed(`Could not find any tags because: ${stderr}`);
-          process.exit(1);
-        }
-        releaseTag = tag.trim();
-        info(`Found tag ${tag} in revision ${revision}`);
-      });
-    }
-  );
-  return releaseTag;
-}
-
-async function compareRefs(env: Env, previousReleaseTag: string) {
+export async function getFilesModifiedFromPreviousRelease(env: Env) {
   const config = parseConfig(env);
   Octokit.plugin(require("@octokit/plugin-throttling"));
 
@@ -67,15 +41,21 @@ async function compareRefs(env: Env, previousReleaseTag: string) {
       warning(`Abuse detected for request ${options.method} ${options.url}`);
     },
   });
-  return await octokit.repos.compareCommits({
-    ...config,
-    head: previousReleaseTag,
-  });
-}
 
-export async function getFilesModifiedFromPreviousRelease(env: Env) {
-  const previousReleaseTag = getPreviousReleaseTag();
-  const commits = await compareRefs(env, previousReleaseTag);
+  const releases = await octokit.repos.listReleases({ ...config });
+
+  const releasedTags = releases.data
+    .filter((_) => !_.draft && !_.prerelease)
+    .map((_) => _.tag_name);
+    
+  if (releasedTags.length < 2)
+    setFailed("Failed to fetch previous release tag");
+
+  const commits = await octokit.repos.compareCommits({
+    ...config,
+    head: releasedTags[1],
+  });
+
   return (
     commits.data.files
       ?.filter((file) => file.status != "removed")
