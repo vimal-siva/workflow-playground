@@ -20,11 +20,11 @@ function run() {
             (0, core_1.debug)(differences.join(" "));
             const componentFilters = {
                 frontend: "frontend/**",
-                backend: "backend/**",
+                backend: "frontend/**",
                 adf: "adf-config/**",
             };
             let filterSets = (0, diff_1.sets)(componentFilters, differences);
-            (0, core_1.info)(`Components modified :: \\n${Object.keys(filterSets).join("\\n")}`);
+            (0, core_1.info)(`Components modified :: \n${Object.keys(filterSets).join("\n")}`);
         }
         catch (error) {
             console.log(error);

@@ -9,11 +9,11 @@ async function run() {
     debug(differences.join(" "));
     const componentFilters = {
       frontend: "frontend/**",
-      backend: "backend/**",
+      backend: "frontend/**",
       adf: "adf-config/**",
     };
     let filterSets = sets(componentFilters, differences);
-    info(`Components modified :: \\n${Object.keys(filterSets).join("\\n")}`);
+    info(`Components modified :: \n${Object.keys(filterSets).join("\n")}`);
   } catch (error: any) {
     console.log(error);
     setFailed(error.message);
