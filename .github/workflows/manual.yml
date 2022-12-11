@@ -21,8 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Get Previous Release
-        uses: sammcoe/get-previous-release-action@v1.0.3
 
       - uses: ./.github/actions/identify-modified-components
         name: Identify modified components
