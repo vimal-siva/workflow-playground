@@ -83,10 +83,6 @@ function getFilesModifiedFromPreviousRelease(env) {
             repo: config.repo,
             basehead: `${releasedTags[1]}...${releasedTags[0]}`
         });
-        // const commits = await octokit.repos.compareCommits({
-        //   ...config,
-        //   head: releasedTags[1],
-        // });
         return ((_c = (_b = (_a = commits.data.files) === null || _a === void 0 ? void 0 : _a.filter((file) => file.status != "removed")) === null || _b === void 0 ? void 0 : _b.map((file) => file.filename)) !== null && _c !== void 0 ? _c : []);
     });
 }
@@ -121,9 +117,9 @@ function run() {
             (0, core_1.setOutput)("files", differences.join(" "));
             (0, core_1.info)(differences.join(" "));
             const componentFilters = {
-                frontend: "./frontend/**",
-                backend: "./backend/**",
-                adf: "./adf-config/**",
+                frontend: "frontend/**",
+                backend: "backend/**",
+                adf: "adf-config/**",
             };
             let filterSets = (0, diff_1.sets)(componentFilters, differences);
             (0, core_1.info)(Object.keys(filterSets).join(" "));

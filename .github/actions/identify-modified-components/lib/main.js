@@ -20,9 +20,9 @@ function run() {
             (0, core_1.setOutput)("files", differences.join(" "));
             (0, core_1.info)(differences.join(" "));
             const componentFilters = {
-                frontend: "./frontend/**",
-                backend: "./backend/**",
-                adf: "./adf-config/**",
+                frontend: "frontend/**",
+                backend: "backend/**",
+                adf: "adf-config/**",
             };
             let filterSets = (0, diff_1.sets)(componentFilters, differences);
             (0, core_1.info)(Object.keys(filterSets).join(" "));

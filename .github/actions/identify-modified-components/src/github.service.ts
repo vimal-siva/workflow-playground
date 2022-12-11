@@ -53,15 +53,12 @@ export async function getFilesModifiedFromPreviousRelease(env: Env) {
     setFailed("Failed to fetch previous release tag");
 
   debug(`Tags to compare :: ${releasedTags[0]} & ${releasedTags[1]}`);
+  
   const commits = await octokit.request('GET /repos/{owner}/{repo}/compare/{basehead}', {
     owner: config.owner,
     repo: config.repo,
     basehead: `${releasedTags[1]}...${releasedTags[0]}`
   });
-  // const commits = await octokit.repos.compareCommits({
-  //   ...config,
-  //   head: releasedTags[1],
-  // });
 
   return (
     commits.data.files

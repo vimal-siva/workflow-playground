@@ -10,9 +10,9 @@ async function run() {
     info(differences.join(" "));
 
     const componentFilters = {
-      frontend: "./frontend/**",
-      backend: "./backend/**",
-      adf: "./adf-config/**",
+      frontend: "frontend/**",
+      backend: "backend/**",
+      adf: "adf-config/**",
     };
 
     let filterSets = sets(componentFilters, differences);
