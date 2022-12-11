@@ -114,19 +114,14 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const differences = yield (0, github_service_1.getFilesModifiedFromPreviousRelease)(process_1.env);
-            (0, core_1.setOutput)("files", differences.join(" "));
-            (0, core_1.info)(differences.join(" "));
+            (0, core_1.debug)(differences.join(" "));
             const componentFilters = {
                 frontend: "frontend/**",
                 backend: "backend/**",
                 adf: "adf-config/**",
             };
             let filterSets = (0, diff_1.sets)(componentFilters, differences);
-            (0, core_1.info)(Object.keys(filterSets).join(" "));
-            Array.from(Object.entries(filterSets)).forEach(([key, matches]) => {
-                (0, core_1.debug)(`files for ${key} ${matches}`);
-                (0, core_1.setOutput)(key, matches.join(" "));
-            });
+            (0, core_1.info)(`Components modified :: \\n${Object.keys(filterSets).join("\\n")}`);
         }
         catch (error) {
             console.log(error);

@@ -6,22 +6,14 @@ import { sets } from "./diff";
 async function run() {
   try {
     const differences = await getFilesModifiedFromPreviousRelease(env);
-    setOutput("files", differences.join(" "));
-    info(differences.join(" "));
-
+    debug(differences.join(" "));
     const componentFilters = {
       frontend: "frontend/**",
       backend: "backend/**",
       adf: "adf-config/**",
     };
-
     let filterSets = sets(componentFilters, differences);
-    info(Object.keys(filterSets).join(" "));
-    
-    Array.from(Object.entries(filterSets)).forEach(([key, matches]) => {
-      debug(`files for ${key} ${matches}`);
-      setOutput(key, matches.join(" "));
-    });
+    info(`Components modified :: \\n${Object.keys(filterSets).join("\\n")}`);
   } catch (error: any) {
     console.log(error);
     setFailed(error.message);
