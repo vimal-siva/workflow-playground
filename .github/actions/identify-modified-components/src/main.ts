@@ -7,6 +7,7 @@ async function run() {
   try {
     const differences = await getFilesModifiedFromPreviousRelease(env);
     setOutput("files", differences.join(" "));
+    info(differences.join(" "));
 
     const componentFilters = {
       frontend: "./frontend/**",

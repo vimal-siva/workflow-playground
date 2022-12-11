@@ -18,6 +18,7 @@ function run() {
         try {
             const differences = yield (0, github_service_1.getFilesModifiedFromPreviousRelease)(process_1.env);
             (0, core_1.setOutput)("files", differences.join(" "));
+            (0, core_1.info)(differences.join(" "));
             const componentFilters = {
                 frontend: "./frontend/**",
                 backend: "./backend/**",
