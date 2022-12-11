@@ -17,14 +17,16 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const differences = yield (0, github_service_1.getFilesModifiedFromPreviousRelease)(process_1.env);
-            (0, core_1.debug)(differences.join(" "));
+            (0, core_1.debug)(`Files modified :: \n ${differences.join('\n')}`);
             const componentFilters = {
                 frontend: "frontend/**",
-                backend: "frontend/**",
+                backend: "backend/**",
                 adf: "adf-config/**",
             };
             let filterSets = (0, diff_1.sets)(componentFilters, differences);
-            (0, core_1.info)(`Components modified :: \n${Object.keys(filterSets).join("\n")}`);
+            (0, core_1.startGroup)('Components modified');
+            (0, core_1.info)(Object.keys(filterSets).join("\n"));
+            (0, core_1.endGroup)();
         }
         catch (error) {
             console.log(error);
