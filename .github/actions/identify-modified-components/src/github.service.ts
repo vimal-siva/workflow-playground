@@ -1,6 +1,5 @@
 import { Octokit } from "@octokit/rest";
-import { setFailed, info, warning } from "@actions/core";
-import { debug } from "console";
+import { setFailed, warning, info } from "@actions/core";
 
 type Env = Record<string, string | undefined>;
 
@@ -52,8 +51,8 @@ export async function getFilesModifiedFromPreviousRelease(env: Env) {
   if (releasedTags.length < 2)
     setFailed("Failed to fetch previous release tag");
 
-  debug(`Tags to compare :: ${releasedTags[0]} & ${releasedTags[1]}`);
-  
+  info(`Tags to compare :: ${releasedTags[0]} & ${releasedTags[1]}`);
+
   const commits = await octokit.request('GET /repos/{owner}/{repo}/compare/{basehead}', {
     owner: config.owner,
     repo: config.repo,
