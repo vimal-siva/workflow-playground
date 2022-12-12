@@ -20,7 +20,7 @@ function parseConfig(env: Env): Config {
   };
 }
 
-export async function getFilesModifiedFromPreviousRelease(env: Env) {
+export async function getFilesModifiedFromPreviousRelease(env: Env): Promise<Array<string>> {
   const config = parseConfig(env);
   Octokit.plugin(require("@octokit/plugin-throttling"));
 

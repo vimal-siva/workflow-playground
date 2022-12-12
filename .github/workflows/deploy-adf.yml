@@ -1,0 +1,16 @@
+name: Deploy Datafactory
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: run
+      - name: Pause for 25 seconds
+        run: |
+          sleep 25
+      - name: fail for testing
+        run: |
+          exit 1

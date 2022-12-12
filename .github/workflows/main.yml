@@ -1,0 +1,42 @@
+name: Manual workflow
+
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  change-detection:
+    runs-on: ubuntu-latest
+    name: Detect changes
+    steps:
+      - uses: actions/checkout@v3
+
+      - id: identify-components
+        name: Identify modified components
+        uses: ./.github/actions/identify-modified-components
+        with:
+          components-json: ./.github/configs/components.json
+
+    outputs:
+      components-matrix: ${{ steps.identify-components.outputs.components-matrix }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: change-detection
+    strategy:
+      fail-fast: true
+      matrix:
+        include: ${{ fromJson(needs.change-detection.outputs.components-matrix) }}
+    steps:
+      - name: Trigger deployments
+        uses: convictional/trigger-workflow-and-wait@v1.6.1
+        with:
+          owner: ${{ github.repository_owner }}
+          repo: ${{ github.repository.name }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow_file_name: ${{ matrix.workflow-name }}
+          wait_workflow: ${{ matrix.wait-for-deploy-completion }}
+          wait_interval: 10
+          ref: ${{ github.ref }}
+          propagate_failure: true

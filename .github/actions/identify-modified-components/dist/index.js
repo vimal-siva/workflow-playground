@@ -1,28 +1,6 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 2484:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.sets = void 0;
-const minimatch_1 = __nccwpck_require__(3973);
-/** produce a collection of named diff sets based on patterns defined in sets */
-const sets = (filters, files) => Array.from(Object.entries(filters)).reduce((filtered, [key, patterns]) => patterns.split(/\r?\n/).reduce((filtered, pattern) => {
-    let matcher = new minimatch_1.Minimatch(pattern);
-    let matched = files.filter((file) => matcher.match(file));
-    if (matched.length > 0) {
-        filtered[key] = (filtered[key] || []).concat(matched);
-    }
-    return filtered;
-}, filtered), {});
-exports.sets = sets;
-
-
-/***/ }),
-
 /***/ 5629:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -108,21 +86,26 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __nccwpck_require__(2186);
 const process_1 = __nccwpck_require__(7282);
 const github_service_1 = __nccwpck_require__(5629);
-const diff_1 = __nccwpck_require__(2484);
+const minimatch_1 = __nccwpck_require__(3973);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const differences = yield (0, github_service_1.getFilesModifiedFromPreviousRelease)(process_1.env);
-            (0, core_1.debug)(`Files modified :: \n ${differences.join('\n')}`);
-            const componentFilters = {
-                frontend: "frontend/**",
-                backend: "backend/**",
-                adf: "adf-config/**",
-            };
-            let filterSets = (0, diff_1.sets)(componentFilters, differences);
-            (0, core_1.startGroup)('Components modified');
-            (0, core_1.info)(Object.keys(filterSets).join("\n"));
+            (0, core_1.debug)(`Files modified :: \n ${differences.join("\n")}`);
+            const components = yield getComponents();
+            const modifiedComponents = Object.entries(components).reduce((filtered, [component, metadata]) => {
+                const isModified = metadata.pathPattern.some((pattern) => {
+                    const matcher = new minimatch_1.Minimatch(pattern);
+                    return differences.some((file) => matcher.match(file));
+                });
+                if (isModified)
+                    filtered.push(Object.assign(Object.assign({}, metadata), { component }));
+                return filtered;
+            }, []);
+            (0, core_1.startGroup)("Components modified");
+            (0, core_1.info)(Object.keys(modifiedComponents).join("\n"));
             (0, core_1.endGroup)();
+            (0, core_1.setOutput)("components-matrix", modifiedComponents);
         }
         catch (error) {
             console.log(error);
@@ -131,6 +114,13 @@ function run() {
     });
 }
 run();
+function getComponents() {
+    const componentsFile = (0, core_1.getInput)("components-json", {
+        required: true,
+        trimWhitespace: true,
+    });
+    return fetch(componentsFile).then((value) => value.json());
+}
 
 
 /***/ }),

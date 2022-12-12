@@ -1,0 +1,23 @@
+{
+    "frontend": {
+        "pathPattern": [
+            "frontend/**"
+        ],
+        "waitForDeployCompletion": true,
+        "workflowName": "deploy-frontend.yml"
+    },
+    "backend": {
+        "pathPattern": [
+            "backend/**"
+        ],
+        "waitForDeployCompletion": true,
+        "workflowName": "deploy-backend.yml"
+    },
+    "azureDataFactory": {
+        "pathPattern": [
+            "adf-config/**"
+        ],
+        "waitForDeployCompletion": true,
+        "workflowName": "deploy-backend.yml"
+    }
+}

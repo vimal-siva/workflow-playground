@@ -1,5 +1,11 @@
-name: Find last release branch
-description: Find last release branch
+name: Identify modified components
+description: Compares with the previous release to indentify the modified components
+
+inputs:
+  components-json:
+    type: string
+    description: Provide the components metadata (i.e path-pattern, workflow to trigger, etc.. )
+    required: true
 
 runs:
   using: 'node16'

@@ -1,0 +1,13 @@
+name: Deploy Backend
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: run
+      - name: Pause for 25 seconds
+        run: |
+          sleep 25

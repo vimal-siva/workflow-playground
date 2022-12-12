@@ -12,21 +12,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@actions/core");
 const process_1 = require("process");
 const github_service_1 = require("./github.service");
-const diff_1 = require("./diff");
+const minimatch_1 = require("minimatch");
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const differences = yield (0, github_service_1.getFilesModifiedFromPreviousRelease)(process_1.env);
-            (0, core_1.debug)(`Files modified :: \n ${differences.join('\n')}`);
-            const componentFilters = {
-                frontend: "frontend/**",
-                backend: "backend/**",
-                adf: "adf-config/**",
-            };
-            let filterSets = (0, diff_1.sets)(componentFilters, differences);
-            (0, core_1.startGroup)('Components modified');
-            (0, core_1.info)(Object.keys(filterSets).join("\n"));
+            (0, core_1.debug)(`Files modified :: \n ${differences.join("\n")}`);
+            const components = yield getComponents();
+            const modifiedComponents = Object.entries(components).reduce((filtered, [component, metadata]) => {
+                const isModified = metadata.pathPattern.some((pattern) => {
+                    const matcher = new minimatch_1.Minimatch(pattern);
+                    return differences.some((file) => matcher.match(file));
+                });
+                if (isModified)
+                    filtered.push(Object.assign(Object.assign({}, metadata), { component }));
+                return filtered;
+            }, []);
+            (0, core_1.startGroup)("Components modified");
+            (0, core_1.info)(Object.keys(modifiedComponents).join("\n"));
             (0, core_1.endGroup)();
+            (0, core_1.setOutput)("components-matrix", modifiedComponents);
         }
         catch (error) {
             console.log(error);
@@ -35,3 +40,10 @@ function run() {
     });
 }
 run();
+function getComponents() {
+    const componentsFile = (0, core_1.getInput)("components-json", {
+        required: true,
+        trimWhitespace: true,
+    });
+    return fetch(componentsFile).then((value) => value.json());
+}

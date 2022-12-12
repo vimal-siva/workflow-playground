@@ -1,23 +1,41 @@
-import { setFailed, debug, info, startGroup, endGroup } from "@actions/core";
+import {
+  setFailed,
+  debug,
+  info,
+  startGroup,
+  endGroup,
+  getInput,
+  setOutput,
+} from "@actions/core";
 import { env } from "process";
 import { getFilesModifiedFromPreviousRelease } from "./github.service";
-import { sets } from "./diff";
+import { ComponentMetadata } from "./ComponentMetadata.type";
+import { Minimatch } from "minimatch";
 
 async function run() {
   try {
     const differences = await getFilesModifiedFromPreviousRelease(env);
-    debug(`Files modified :: \n ${differences.join('\n')}`);
+    debug(`Files modified :: \n ${differences.join("\n")}`);
 
-    const componentFilters = {
-      frontend: "frontend/**",
-      backend: "backend/**",
-      adf: "adf-config/**",
-    };
-    let filterSets = sets(componentFilters, differences);
+    const components = await getComponents();
 
-    startGroup('Components modified');
-    info(Object.keys(filterSets).join("\n"));
+    const modifiedComponents = Object.entries(components).reduce(
+      (filtered, [component, metadata]) => {
+        const isModified = metadata.pathPattern.some((pattern) => {
+          const matcher = new Minimatch(pattern);
+          return differences.some((file) => matcher.match(file));
+        });
+
+        if (isModified) filtered.push({ ...metadata, component });
+        return filtered;
+      },
+      [] as ComponentMetadata[]
+    );
+
+    startGroup("Components modified");
+    info(Object.keys(modifiedComponents).join("\n"));
     endGroup();
+    setOutput("components-matrix", modifiedComponents);
   } catch (error: any) {
     console.log(error);
     setFailed(error.message);
@@ -25,3 +43,11 @@ async function run() {
 }
 
 run();
+function getComponents(): Promise<Record<string, ComponentMetadata>> {
+  const componentsFile = getInput("components-json", {
+    required: true,
+    trimWhitespace: true,
+  });
+
+  return fetch(componentsFile).then((value) => value.json());
+}
