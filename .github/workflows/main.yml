@@ -35,6 +35,8 @@ jobs:
       matrix:
         include: ${{ fromJson(needs.change-detection.outputs.components-matrix) }}
     steps:
+      - run: env
+      - run: echo ${{ needs.change-detection.outputs.components-matrix }}
       - name: Trigger deployments
         uses: convictional/trigger-workflow-and-wait@v1.6.1
         with:
