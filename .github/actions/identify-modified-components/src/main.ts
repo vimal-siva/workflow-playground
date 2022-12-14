@@ -12,6 +12,7 @@ import { getFilesModifiedFromPreviousRelease } from "./github.service";
 import { ComponentMetadata } from "./ComponentMetadata.type";
 import { Minimatch } from "minimatch";
 import fetch from "node-fetch";
+import * as path from 'path';
 
 function getComponents(): Promise<Record<string, ComponentMetadata>> {
   const componentsFile = getInput("components-json", {
@@ -19,7 +20,10 @@ function getComponents(): Promise<Record<string, ComponentMetadata>> {
     trimWhitespace: true,
   });
 
-  return fetch(componentsFile).then(
+  const workspacePath: string = process.env[`GITHUB_WORKSPACE`] || "";
+  const absoluteFilePath: string = path.join(workspacePath, componentsFile);
+
+  return fetch(absoluteFilePath).then(
     (value: any) => value.json() as Record<string, ComponentMetadata>
   );
 }
