@@ -11,20 +11,15 @@ import { env } from "process";
 import { getFilesModifiedFromPreviousRelease } from "./github.service";
 import { ComponentMetadata } from "./ComponentMetadata.type";
 import { Minimatch } from "minimatch";
-import fileFrom from "node-fetch";
-import * as path from 'path';
+import { readFileSync } from 'fs';
 
 function getComponents(): Promise<Record<string, ComponentMetadata>> {
   const componentsFile = getInput("components-json", {
     required: true,
     trimWhitespace: true,
   });
-
-  const workspacePath: string = process.env[`GITHUB_WORKSPACE`] || "";
-  const absoluteFilePath: string = path.join(workspacePath, componentsFile);
-  return fileFrom(absoluteFilePath).then(
-    (value: any) => value.json() as Record<string, ComponentMetadata>
-  );
+  const contents =  readFileSync(componentsFile, 'utf8');
+  return JSON.parse(contents);
 }
 
 async function run() {
