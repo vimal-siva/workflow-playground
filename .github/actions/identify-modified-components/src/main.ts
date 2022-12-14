@@ -43,7 +43,7 @@ async function run() {
     );
 
     startGroup("Components modified");
-    info(Object.keys(modifiedComponents).join("\n"));
+    info(modifiedComponents.map(_ => _.component).join('\n'));
     endGroup();
     setOutput("components-matrix", modifiedComponents);
   } catch (error: any) {

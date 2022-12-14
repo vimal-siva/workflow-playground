@@ -112,7 +112,7 @@ function run() {
                 return filtered;
             }, []);
             (0, core_1.startGroup)("Components modified");
-            (0, core_1.info)(Object.keys(modifiedComponents).join("\n"));
+            (0, core_1.info)(modifiedComponents.map(_ => _.component).join('\n'));
             (0, core_1.endGroup)();
             (0, core_1.setOutput)("components-matrix", modifiedComponents);
         }
