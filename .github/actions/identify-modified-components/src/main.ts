@@ -11,6 +11,18 @@ import { env } from "process";
 import { getFilesModifiedFromPreviousRelease } from "./github.service";
 import { ComponentMetadata } from "./ComponentMetadata.type";
 import { Minimatch } from "minimatch";
+import fetch from "node-fetch";
+
+function getComponents(): Promise<Record<string, ComponentMetadata>> {
+  const componentsFile = getInput("components-json", {
+    required: true,
+    trimWhitespace: true,
+  });
+
+  return fetch(componentsFile).then(
+    (value: any) => value.json() as Record<string, ComponentMetadata>
+  );
+}
 
 async function run() {
   try {
@@ -43,11 +55,3 @@ async function run() {
 }
 
 run();
-function getComponents(): Promise<Record<string, ComponentMetadata>> {
-  const componentsFile = getInput("components-json", {
-    required: true,
-    trimWhitespace: true,
-  });
-
-  return fetch(componentsFile).then((value) => value.json());
-}
