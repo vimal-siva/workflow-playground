@@ -7,7 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: run
+      - run: env
       - name: Pause for 40 seconds
         run: |
           sleep 40
