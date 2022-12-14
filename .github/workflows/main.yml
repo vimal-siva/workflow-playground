@@ -43,8 +43,8 @@ jobs:
           owner: ${{ github.repository_owner }}
           repo: workflow-playground
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow_file_name: ${{ matrix.workflow-name }}
-          wait_workflow: ${{ matrix.wait-for-deploy-completion }}
+          workflow_file_name: ${{ matrix.workflowName }}
+          wait_workflow: ${{ matrix.waitForDeployCompletion }}
           wait_interval: 10
           ref: ${{ github.ref }}
           propagate_failure: true
