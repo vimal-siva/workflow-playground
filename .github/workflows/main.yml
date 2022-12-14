@@ -6,6 +6,10 @@ on:
     types: [published]
 
   workflow_dispatch:
+  
+  push:
+    branches:
+      - main
 
 jobs:
   change-detection:
