@@ -18,6 +18,6 @@
             "adf-config/**"
         ],
         "waitForDeployCompletion": true,
-        "workflowName": "deploy-backend.yml"
+        "workflowName": "deploy-adf.yml"
     }
 }
