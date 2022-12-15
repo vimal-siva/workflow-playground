@@ -8,7 +8,7 @@ describe('workspace-project App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', async () => {
+  it('should display welcome mssage', async () => {
     await page.navigateTo();
     expect(await page.getTitleText()).toEqual('rock-app app is running!');
   });

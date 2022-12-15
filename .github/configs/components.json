@@ -4,7 +4,7 @@
             "frontend/**"
         ],
         "excludePathPattern": [
-            "frontend/assets/help-docs/**"
+            "frontend/e2e/**"
         ],
         "waitForDeployCompletion": true,
         "workflowName": "deploy-frontend.yml"
