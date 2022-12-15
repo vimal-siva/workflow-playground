@@ -48,10 +48,10 @@ function getFilesModifiedFromPreviousRelease(env) {
         if (releasedTags.length < 2)
             (0, core_1.setFailed)("Failed to fetch previous release tag");
         (0, core_1.info)(`Tags to compare :: ${releasedTags[0]} & ${releasedTags[1]}`);
-        const commits = yield octokit.request('GET /repos/{owner}/{repo}/compare/{basehead}', {
+        const commits = yield octokit.request("GET /repos/{owner}/{repo}/compare/{basehead}", {
             owner: config.owner,
             repo: config.repo,
-            basehead: `${releasedTags[1]}...${releasedTags[0]}`
+            basehead: `${releasedTags[1]}...${releasedTags[0]}`,
         });
         return ((_c = (_b = (_a = commits.data.files) === null || _a === void 0 ? void 0 : _a.filter((file) => file.status != "removed")) === null || _b === void 0 ? void 0 : _b.map((file) => file.filename)) !== null && _c !== void 0 ? _c : []);
     });

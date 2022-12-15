@@ -20,7 +20,9 @@ function parseConfig(env: Env): Config {
   };
 }
 
-export async function getFilesModifiedFromPreviousRelease(env: Env): Promise<Array<string>> {
+export async function getFilesModifiedFromPreviousRelease(
+  env: Env
+): Promise<Array<string>> {
   const config = parseConfig(env);
   Octokit.plugin(require("@octokit/plugin-throttling"));
 
@@ -47,17 +49,20 @@ export async function getFilesModifiedFromPreviousRelease(env: Env): Promise<Arr
   const releasedTags = releases.data
     .filter((_) => !_.draft && !_.prerelease)
     .map((_) => _.tag_name);
-  
+
   if (releasedTags.length < 2)
     setFailed("Failed to fetch previous release tag");
 
   info(`Tags to compare :: ${releasedTags[0]} & ${releasedTags[1]}`);
 
-  const commits = await octokit.request('GET /repos/{owner}/{repo}/compare/{basehead}', {
-    owner: config.owner,
-    repo: config.repo,
-    basehead: `${releasedTags[1]}...${releasedTags[0]}`
-  });
+  const commits = await octokit.request(
+    "GET /repos/{owner}/{repo}/compare/{basehead}",
+    {
+      owner: config.owner,
+      repo: config.repo,
+      basehead: `${releasedTags[1]}...${releasedTags[0]}`,
+    }
+  );
 
   return (
     commits.data.files

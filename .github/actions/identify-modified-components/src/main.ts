@@ -10,15 +10,15 @@ import {
 import { env } from "process";
 import { getFilesModifiedFromPreviousRelease } from "./github.service";
 import { ComponentMetadata } from "./ComponentMetadata.type";
-import { Minimatch } from "minimatch";
-import { readFileSync } from 'fs';
+import * as minimatch from "minimatch";
+import { readFileSync } from "fs";
 
 function getComponents(): Promise<Record<string, ComponentMetadata>> {
   const componentsFile = getInput("components-json", {
     required: true,
     trimWhitespace: true,
   });
-  const contents =  readFileSync(componentsFile, 'utf8');
+  const contents = readFileSync(componentsFile, "utf8");
   return JSON.parse(contents);
 }
 
@@ -31,19 +31,35 @@ async function run() {
 
     const modifiedComponents = Object.entries(components).reduce(
       (filtered, [component, metadata]) => {
-        const isModified = metadata.pathPattern.some((pattern) => {
-          const matcher = new Minimatch(pattern);
-          return differences.some((file) => matcher.match(file));
-        });
+        let componentDifferences = metadata.pathPattern.reduce(
+          (result, pattern) => {
+            result.push(...minimatch.match(differences, pattern));
+            return result;
+          },
+          [] as Array<string>
+        );
+        componentDifferences = (metadata.excludePathPattern ?? []).reduce(
+          (componentDifferences, pattern) => {
+            const differencesToBeExcluded = minimatch.match(
+              componentDifferences,
+              pattern
+            );
+            return componentDifferences.filter(
+              (_) => !differencesToBeExcluded.includes(_)
+            );
+          },
+          componentDifferences
+        );
 
-        if (isModified) filtered.push({ ...metadata, component });
+        if (componentDifferences.length > 0)
+          filtered.push({ ...metadata, component });
         return filtered;
       },
       [] as ComponentMetadata[]
     );
 
     startGroup("Components modified");
-    info(modifiedComponents.map(_ => _.component).join('\n'));
+    info(modifiedComponents.map((_) => _.component).join("\n"));
     endGroup();
     setOutput("components-matrix", modifiedComponents);
   } catch (error: any) {

@@ -55,10 +55,10 @@ function getFilesModifiedFromPreviousRelease(env) {
         if (releasedTags.length < 2)
             (0, core_1.setFailed)("Failed to fetch previous release tag");
         (0, core_1.info)(`Tags to compare :: ${releasedTags[0]} & ${releasedTags[1]}`);
-        const commits = yield octokit.request('GET /repos/{owner}/{repo}/compare/{basehead}', {
+        const commits = yield octokit.request("GET /repos/{owner}/{repo}/compare/{basehead}", {
             owner: config.owner,
             repo: config.repo,
-            basehead: `${releasedTags[1]}...${releasedTags[0]}`
+            basehead: `${releasedTags[1]}...${releasedTags[0]}`,
         });
         return ((_c = (_b = (_a = commits.data.files) === null || _a === void 0 ? void 0 : _a.filter((file) => file.status != "removed")) === null || _b === void 0 ? void 0 : _b.map((file) => file.filename)) !== null && _c !== void 0 ? _c : []);
     });
@@ -73,6 +73,29 @@ exports.getFilesModifiedFromPreviousRelease = getFilesModifiedFromPreviousReleas
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -86,14 +109,14 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __nccwpck_require__(2186);
 const process_1 = __nccwpck_require__(7282);
 const github_service_1 = __nccwpck_require__(5629);
-const minimatch_1 = __nccwpck_require__(3973);
+const minimatch = __importStar(__nccwpck_require__(3973));
 const fs_1 = __nccwpck_require__(7147);
 function getComponents() {
     const componentsFile = (0, core_1.getInput)("components-json", {
         required: true,
         trimWhitespace: true,
     });
-    const contents = (0, fs_1.readFileSync)(componentsFile, 'utf8');
+    const contents = (0, fs_1.readFileSync)(componentsFile, "utf8");
     return JSON.parse(contents);
 }
 function run() {
@@ -103,16 +126,21 @@ function run() {
             (0, core_1.debug)(`Files modified :: \n ${differences.join("\n")}`);
             const components = yield getComponents();
             const modifiedComponents = Object.entries(components).reduce((filtered, [component, metadata]) => {
-                const isModified = metadata.pathPattern.some((pattern) => {
-                    const matcher = new minimatch_1.Minimatch(pattern);
-                    return differences.some((file) => matcher.match(file));
-                });
-                if (isModified)
+                var _a;
+                let componentDifferences = metadata.pathPattern.reduce((result, pattern) => {
+                    result.push(...minimatch.match(differences, pattern));
+                    return result;
+                }, []);
+                componentDifferences = ((_a = metadata.excludePathPattern) !== null && _a !== void 0 ? _a : []).reduce((componentDifferences, pattern) => {
+                    const differencesToBeExcluded = minimatch.match(componentDifferences, pattern);
+                    return componentDifferences.filter((_) => !differencesToBeExcluded.includes(_));
+                }, componentDifferences);
+                if (componentDifferences.length > 0)
                     filtered.push(Object.assign(Object.assign({}, metadata), { component }));
                 return filtered;
             }, []);
             (0, core_1.startGroup)("Components modified");
-            (0, core_1.info)(modifiedComponents.map(_ => _.component).join('\n'));
+            (0, core_1.info)(modifiedComponents.map((_) => _.component).join("\n"));
             (0, core_1.endGroup)();
             (0, core_1.setOutput)("components-matrix", modifiedComponents);
         }
