@@ -9,9 +9,16 @@ import {
 } from "@actions/core";
 import { env } from "process";
 import { getFilesModifiedFromPreviousRelease } from "./github.service";
-import { ComponentMetadata } from "./ComponentMetadata.type";
-import * as minimatch from "minimatch";
+import minimatch from "minimatch";
 import { readFileSync } from "fs";
+
+interface ComponentMetadata {
+  component: string;
+  workflowName: string;
+  pathPattern: Array<string>;
+  excludePathPattern: Array<string>;
+  waitForDeployCompletion: boolean;
+}
 
 function getComponents(): Promise<Record<string, ComponentMetadata>> {
   const componentsFile = getInput("components-json", {
