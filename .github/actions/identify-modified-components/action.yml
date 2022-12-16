@@ -1,5 +1,5 @@
 name: Identify modified components
-description: Compares with the previous release to indentify the modified components
+description: Compares with the previous release to identify the modified components
 
 inputs:
   components-json:

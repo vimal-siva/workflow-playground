@@ -1,7 +1,7 @@
 {
-  "name": "find-last-release",
+  "name": "identify-modified-components",
   "version": "1.0.0",
-  "description": "Find the last release version from barnch names",
+  "description": "Compares with the previous release to identify the modified components",
   "main": "src/index.js",
   "scripts": {
     "build": "tsc && ncc build lib/main.js",
