@@ -1,8 +1,12 @@
-name: Deploy Datafactory
+name: ${{ inputs.title }}
 
 on:
   workflow_dispatch:
-
+    inputs:
+      title:
+        required: true
+        description: title
+      
 jobs:
   build:
     runs-on: ubuntu-latest
