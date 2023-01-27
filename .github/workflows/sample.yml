@@ -3,7 +3,13 @@ name: Sample for Demo Purpose
 on:
   push:
     branches:
-      - some-branch
+      - main
+  workflow_dispatch:
+    inputs:
+      name:
+        - type: string
+          required: true
+          description: Provide your name here
 
 jobs:
   say_hello:
