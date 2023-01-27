@@ -1,0 +1,14 @@
+name: Sample for Demo Purpose
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  say_hello:
+    name: Greet User
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Hello"
