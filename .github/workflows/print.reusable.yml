@@ -1,0 +1,25 @@
+name: print operation
+
+on:
+  workflow_call:
+    inputs:
+      name:
+        type: string
+        description: user name to be printed
+        required: true
+
+jobs:
+  say_hello:
+    name: Greet User
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Computer : Hello ${{ inputs.name }}"
+      - run: |
+          echo "Computer : Hello ${{ inputs.name }}"
+      - run: |
+          echo "Computer : Hello ${{ inputs.name }}"
+      - run: |
+          echo "Computer : Hello ${{ inputs.name }}"
+      - run: |
+          echo "Computer : Hello ${{ inputs.name }}"

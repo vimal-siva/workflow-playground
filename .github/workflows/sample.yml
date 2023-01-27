@@ -12,18 +12,14 @@ on:
         description: Provide your name here
 
 jobs:
-  say_hello:
-    name: Greet User
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo "Computer : Hello Vimal"
-          exit -1
-  
-  say_hi:
-    needs: [say_hello]
-    name: Respond
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo "Vimal : Hi "
+  say_hello_1:
+    uses: .github/workflows/print.reusable.yml@main
+    name: print me
+    with:
+      name: Vimal
+      
+  say_hello_2:
+    uses: .github/workflows/print.reusable.yml@main
+    name: print me
+    with:
+      name: Suba
