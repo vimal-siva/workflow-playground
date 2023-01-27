@@ -20,7 +20,8 @@ jobs:
           echo "Computer : Hello Vimal"
   
   say_hi:
-    name: Greet User
+    needs: [say_hello]
+    name: Respond
     runs-on: ubuntu-latest
     steps:
       - run: |
