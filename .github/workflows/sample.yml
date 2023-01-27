@@ -17,4 +17,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "Hello ${{ inputs.name }}"
+          echo "Computer : Hello Vimal"
+  
+  say_hi:
+    name: Greet User
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Vimal : Hi "
