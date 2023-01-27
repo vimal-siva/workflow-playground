@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       name:
-        - type: string
-          required: true
-          description: Provide your name here
+        type: string
+        required: true
+        description: Provide your name here
 
 jobs:
   say_hello:
