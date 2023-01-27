@@ -13,13 +13,13 @@ on:
 
 jobs:
   say_hello_1:
-    uses: .github/workflows/print.reusable.yml@main
+    uses: ./.github/workflows/print.reusable.yml@main
     name: print me
     with:
       name: Vimal
-      
+
   say_hello_2:
-    uses: .github/workflows/print.reusable.yml@main
+    uses: ./.github/workflows/print.reusable.yml@main
     name: print me
     with:
       name: Suba
