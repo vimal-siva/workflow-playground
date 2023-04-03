@@ -9,6 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Release Components
     steps:
+      - name: Setup workspace
+        uses: actions/checkout@v3
+        
       - name: Identify & Trigger deployment
         uses: ./.github/actions/release-action
         with:
