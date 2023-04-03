@@ -1,0 +1,13 @@
+﻿global using CommandLine;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Hosting;
+global using Microsoft.Extensions.Logging;
+global using Octokit;
+global using System.Collections.Concurrent;
+global using System.Linq;
+global using System.Text.Json;
+global using ReleaseAction;
+global using ReleaseAction.Extensions;
+global using ReleaseAction.GitHub;
+global using ReleaseAction.Models;
+global using static CommandLine.Parser;

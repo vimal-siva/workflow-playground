@@ -1,0 +1,48 @@
+name: 'Trigger Deployments'
+description: 'A Github action that deploys the components based on the sequence defined in components-json file.'
+inputs:
+  components-json:
+    description: 'Provide the components metadata (i.e path-pattern, workflow to trigger, etc.. )'
+    required: true
+  environment:
+    description: 'The environment in which components have to be deployed.'
+    required: true
+  owner:
+    description: 'The owner of the repo. Assign from github.repository_owner. Example, "dotnet".'
+    required: true
+  repo:
+    description: 'The repository name. Assign from github.event.repository.name. Example, "samples".'
+    required: true
+  branch:
+    description: 'The branch name. Assign from github.ref. Example, "refs/heads/main".'
+    required: true
+  head-sha:
+    description: 'The commit SHA that triggered the workflow. For example, ffac537e6cbbf934b08745a378932722df287a53.'
+    required: true
+  github-token:
+    description: 'Token for authenticating to GitHub APIs'
+    required: true
+  refresh-interval:
+    description: 'The number of milliseconds delay between checking for result of run.'
+    required: false
+    default: 5000
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+  - '-c'
+  - ${{ inputs.components-json }}
+  - '-e'
+  - ${{ inputs.environment }}
+  - '-o'
+  - ${{ inputs.owner }}
+  - '-r'
+  - ${{ inputs.repo }}
+  - '-b'
+  - ${{ inputs.branch }}
+  - '-s'
+  - ${{ inputs.head-sha }}
+  - '-t'
+  - ${{ inputs.github-token }}
+  - '-i'
+  - ${{ inputs.refresh-interval }}

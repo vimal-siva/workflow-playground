@@ -5,38 +5,52 @@ on:
     types: [published]
 
 jobs:
-  change-detection:
+  release-components:
     runs-on: ubuntu-latest
-    name: Detect changes
+    name: Release Components
     steps:
-      - uses: actions/checkout@v3
-
-      - id: identify-components
-        name: Identify modified components
-        uses: ./.github/actions/identify-modified-components
+      - name: Identify & Trigger deployment
+        uses: ./.github/actions/release-action
         with:
           components-json: ./.github/configs/components.json
-
-    outputs:
-      components-matrix: ${{ steps.identify-components.outputs.components-matrix }}
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: change-detection
-    if: ${{ fromJson(needs.change-detection.outputs.components-matrix).length > 0 }}
-    strategy:
-      fail-fast: true
-      matrix:
-        include: ${{ fromJson(needs.change-detection.outputs.components-matrix) }}
-    steps:
-      - name: Trigger deployments
-        uses: convictional/trigger-workflow-and-wait@v1.6.1
-        with:
+          environment: test
           owner: ${{ github.repository_owner }}
           repo: ${{ github.event.repository.name }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow_file_name: ${{ matrix.workflowName }}
-          wait_workflow: ${{ matrix.waitForDeployCompletion }}
-          wait_interval: 10
-          ref: ${{ github.ref }}
-          propagate_failure: true
+          branch: ${{ github.ref }}
+          head-sha: ${{ github.sha }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+  # change-detection:
+  #   runs-on: ubuntu-latest
+  #   name: Detect changes
+  #   steps:
+  #     - uses: actions/checkout@v3
+
+  #     - id: identify-components
+  #       name: Identify modified components
+  #       uses: ./.github/actions/identify-modified-components
+  #       with:
+  #         components-json: ./.github/configs/components.json
+
+  #   outputs:
+  #     components-matrix: ${{ steps.identify-components.outputs.components-matrix }}
+
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: change-detection
+  #   if: ${{ fromJson(needs.change-detection.outputs.components-matrix).length > 0 }}
+  #   strategy:
+  #     fail-fast: true
+  #     matrix:
+  #       include: ${{ fromJson(needs.change-detection.outputs.components-matrix) }}
+  #   steps:
+  #     - name: Trigger deployments
+  #       uses: convictional/trigger-workflow-and-wait@v1.6.1
+  #       with:
+  #         owner: ${{ github.repository_owner }}
+  #         repo: ${{ github.event.repository.name }}
+  #         github_token: ${{ secrets.GITHUB_TOKEN }}
+  #         workflow_file_name: ${{ matrix.workflowName }}
+  #         wait_workflow: ${{ matrix.waitForDeployCompletion }}
+  #         wait_interval: 10
+  #         ref: ${{ github.ref }}
+  #         propagate_failure: true
